@@ -1,5 +1,4 @@
 # irrigation_component_v2
-
 The driver for this project is to provide an easy to configure user interface for the gardener of the house. The goal is that once the inital configuration is done all the features can be modified through lovelace cards. To further simplify things there are conditions in Lovelace example to hide away the configuration items.
 
 # Irrigation
@@ -26,9 +25,10 @@ The solution is two custom components implemeting new switch platform types:
 
 ## INSTALLATION
 ### To create a working sample
-* Copy the program and zone folders to the ‘config/custom components/’ directory 
-* Copy the 'irrigation.yaml' file to the packages directory or configuration.yaml
-* Copy the 'dummyzones.yaml' file to the packages directory of configuration yaml. This will provide dummy implementation of switches to represent solenoids.
+* Copy the irrigationprogram and irrigationzone folders to the ‘config/custom components/’ directory 
+* Copy the 'irrigation.yaml' file to the packages directory or into configuration.yaml
+* Copy the 'dummyzones.yaml' file to the packages directory of into configuration yaml. This will provide dummy implementation of switches to represent solenoids.
+* Restart Home Assistant
 * In Lovelace create a 'manual' card and copy the contents of the 'lovelace.yaml' file
 
 ## CONFIGURATION
@@ -86,7 +86,8 @@ The solution is two custom components implemeting new switch platform types:
 *(list)(Required)* the list of zones to water.
 #### zone
 *(entity)(Required)* This is the name given to the irrigation_zone entity.
-
+#### unique_id
+*(strin)(Optional)* An ID that uniquely identifies this switch. Set this to an unique value to allow customisation trough the UI.
 
 ## zone
 *(string)(Required)* the switch entity.
@@ -108,6 +109,8 @@ The solution is two custom components implemeting new switch platform types:
 *(icon)(Optional)* This will replace the default icon mdi:water-off.
 #### icon_wait
 *(icon)(Optional)* This will replace the default icon mdi:timer-sand.
+#### unique_id
+*(strin)(Optional)* An ID that uniquely identifies this switch. Set this to an unique value to allow customisation trough the UI.
 
 ## SERVICES
 ```yaml
