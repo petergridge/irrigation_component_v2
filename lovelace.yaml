@@ -1,0 +1,109 @@
+entities:
+  - entity: binary_sensor.irrigation_status
+    name: Irrigation ESPHome Status
+  - entity: binary_sensor.irrigation_rain_sensor
+  - entity: input_boolean.irrigation_config
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_boolean.irrigation_on
+    type: conditional
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_boolean.irrigation_ignore_rain_sensor
+    type: conditional
+show_header_toggle: false
+title: Irrigation
+type: entities
+
+entities:
+  - entity: switch.morning
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_datetime.irrigation_morning_start_time
+    type: conditional
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_select.irrigation_run_days
+    type: conditional
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_select.irrigation_freq
+    type: conditional
+  - type: divider
+show_header_toggle: false
+title: Programs
+type: entities
+
+entities:
+  - entity: switch.pot_plants
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_number.irrigation_pot_plants_run
+    type: conditional
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_number.irrigation_pot_plants_wait
+    type: conditional
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_number.irrigation_pot_plants_repeat
+    type: conditional
+  - type: divider
+  - entity: switch.vege_patch
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_number.irrigation_vege_run
+    type: conditional
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_number.irrigation_vege_wait
+    type: conditional
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_number.irrigation_vege_repeat
+    type: conditional
+  - type: divider
+  - entity: switch.front_lawn
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_number.irrigation_lawn_run
+    type: conditional
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_number.irrigation_lawn_wait
+    type: conditional
+  - conditions:
+      - entity: input_boolean.irrigation_config
+        state: 'on'
+    row:
+      entity: input_number.irrigation_lawn_repeat
+    type: conditional
+show_header_toggle: false
+title: Zones
+type: entities
