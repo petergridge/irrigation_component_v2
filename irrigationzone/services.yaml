@@ -1,0 +1,4 @@
+
+stop_zones:
+    description: Stop any running zones.
+
