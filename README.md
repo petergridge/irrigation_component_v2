@@ -1,5 +1,5 @@
 # Irrigation Component V2
-The driver for this project is to provide an easy to configure user interface for the gardener of the house. The goal is that once the inital configuration is done all the features can be modified through lovelace cards. To further simplify things there are conditions in Lovelace example to hide away the configuration items.
+The driver for this project is to provide an easy to configure user interface for the gardener of the house. The goal is that once the inital configuration is done all the features can be modified through lovelace cards. To further simplify things there are conditions in the Lovelace example to hide the configuration items.
 
 ![irrigation|690x469,50%](irrigation.jpg) 
 ![irrigation2|690x469,50%](irrigation2.jpg)
