@@ -80,13 +80,13 @@ The solution is two custom components implemeting new switch platform types:
 #### ignore_rain_sensor
 *(input_boolean)(Optional)* Attribute to allow the schedule to run regardless of the state of the rain sensor
 #### icon
-*(mdi:icon)(Optional)*
+*(icon)(Optional)*
 #### Zones 
 *(list)(Required)* the list of zones to water.
 #### zone
 *(entity)(Required)* This is the name given to the irrigation_zone entity.
 #### unique_id
-*(strin)(Optional)* An ID that uniquely identifies this switch. Set this to an unique value to allow customisation trough the UI.
+*(string)(Optional)* An ID that uniquely identifies this switch. Set this to an unique value to allow customisation trough the UI.
 
 ## zone
 *(string)(Required)* the switch entity.
@@ -109,7 +109,7 @@ The solution is two custom components implemeting new switch platform types:
 #### icon_wait
 *(icon)(Optional)* This will replace the default icon mdi:timer-sand.
 #### unique_id
-*(strin)(Optional)* An ID that uniquely identifies this switch. Set this to an unique value to allow customisation trough the UI.
+*(string)(Optional)* An ID that uniquely identifies this switch. Set this to an unique value to allow customisation trough the UI.
 
 ## SERVICES
 ```yaml
