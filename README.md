@@ -42,17 +42,7 @@ The component creates two switch platform types
 An irrigation section must be present in the configuration.yaml file that specifies the irrigation programs, zones and the switches attached:
 ### Example configuration.yaml entry
 ```yaml
-switch:
-  - platform: irrigationzone
-    switches:
-      pot_plants:
-        friendly_name: Pot Plants
-        water: input_number.irrigation_pot_plants_run
-        wait: input_number.irrigation_pot_plants_wait
-        repeat: input_number.irrigation_pot_plants_repeat
-        switch_entity: switch.irrigation_solenoid_01
-        icon_off: 'mdi:flower'
-
+  switch:
   - platform: irrigationprogram
     switches: 
       morning:
@@ -67,6 +57,16 @@ switch:
         zones:
           - zone: switch.pot_plants
           - zone: switch.front_lawn
+          
+  - platform: irrigationzone
+    switches:
+      pot_plants:
+        friendly_name: Pot Plants
+        water: input_number.irrigation_pot_plants_run
+        wait: input_number.irrigation_pot_plants_wait
+        repeat: input_number.irrigation_pot_plants_repeat
+        switch_entity: switch.irrigation_solenoid_01
+        icon_off: 'mdi:flower'
 ```
 ## CONFIGURATION VARIABLES
 
@@ -83,7 +83,13 @@ switch:
 ##### run_days
 *(input_select)* The selected option should provide a list days to run, 'Sun','Thu' will run on Sunday and Thursday
 #### irrigation_on
-*(input_boolean)(Optional)* Attribute to temproarily disable the watering schedule
+*(input_boolean)(Optional)* Attribute to temporarily disable the watering schedule
+#### rain_sensor
+*(binary_sensor)(Optional)* Any sensor - True or On will prevent the irrigation starting
+#### ignore_rain_sensor
+*(input_boolean)(Optional)* Attribute to allow the schedule to run regardless of the state of the rain sensor
+#### icon
+*(mdi:icon)(Optional)*
 #### Zones 
 *(list)(Required)* the list of zones to water.
 #### zone
