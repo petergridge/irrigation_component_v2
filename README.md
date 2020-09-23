@@ -1,25 +1,21 @@
 # irrigation_component_v2
 Home assistant custom component based on template switches optimised to use inputs from lovelace to configure
 
-The driver for this project is to provide an easy to configure user interface for a non technical user. the goal is that once the inital configuration is done all the features can be modified through lovelace cards without needing to touch any yaml.
-
-While this leads to a small reduction in flexibility from the initial project the usability and clean interface attempt to mirror a standard irrigation controller.
+The driver for this project is to provide an easy to configure user interface for a non technical user (the lady of the house). The goal is that once the inital configuration is done all the features can be modified through lovelace cards. To further simplify things I have a confoigured conditions in Lovelace to hide away the configuration items.
 
 # Irrigation
-![Irrigation|690x469,50%](irrigation.PNG)
-The irrigation component provides the capability to control your irrigation solenoids.
+![irrigation|690x469,50%](irrigation.jpg) 
+![irrigation2|690x469,50%](irrigation2.jpg)
 
-When starting up or powering down the defined switches are turned off to help prevent a solenoid being left on accidentally as a result of your home assistant server having a power outage.
+Watering can occur in an Eco mode where a water/wait/repeat cycle is run to minimise run off by letting water soak as a by using several short watering cycles.
 
-Water can occur in an Eco mode where a water/wait/repeat cycle is run to minimise run off by letting water soak as a result of several short watering cycles.
+A rain sensor is allowed for that is implemented as a binary_sensor, this allows you use sensor components to suspend the irrigation. Additionally being implemented as a switch you can also start a program or zone based on any automation.
 
-Only one program can run at a time to prevent multiple solenoids being activated. If programs overlap the running program will be stopped.
+Only one program or zone can run at a time to prevent multiple solenoids being activated. If program start times result in an overlap the running program will be stopped.
 
-All the inputs of the new platforms are Home Assistant entities for example the start time is provided via a input_date_time entity.
+All the inputs of the new platforms are Home Assistant entities for example the start time is provided via a input_date_time entity. The information available is used to define a template internally that is evaluated to trigger the irrigate action according to the inputs provided.
 
-All the information provided is used to define a template internally that triggers the irrigate action according to the inputs provided.
-
-The component creates two switch platform types
+The solution is actually two custom components implemeting new switch platform types
 * irrigationprogram - to represent a program
   - The irrigation entity stores the last run day.
   - The list of zones to run in this program.
