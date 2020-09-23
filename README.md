@@ -132,6 +132,3 @@ An example ESPHOME configuration file is included in the repository this example
 ## REVISION HISTORY
 0.1
 •	Initial release
-
-
-
