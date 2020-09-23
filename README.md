@@ -1,6 +1,10 @@
 # irrigation_component_v2
 Home assistant custom component based on template switches optimised to use inputs from lovelace to configure
 
+The driver for this project is to provide an easy to configure user interface for a non technical user. the goal is that once the inital configuration is done all the features can be modified through lovelace cards without needing to touch any yaml.
+
+While this leads to a small reduction in flexibility from the initial project the usability and clean interface attempt to mirror a standard irrigation controller.
+
 # Irrigation
 ![Irrigation|690x469,50%](irrigation.PNG)
 The irrigation component provides the capability to control your irrigation solenoids.
@@ -13,21 +17,26 @@ Only one program can run at a time to prevent multiple solenoids being activated
 
 Templates are used to monitor conditions to initiate watering. For programs this can be used to run on specific days or every 3 days or to prevent watering based on a sensor state. For zones this can be used so rules can be applied to individual zones allowing watering to occur in a covered area, or not occur if it is very windy the options are endless.
 
-The component creates two entity types
-* irrigation - to represent a program
+All the inputs of the new platforms are home assistant entities so the start time is provided via a input_date_time entity.
+
+All the information provided is used to define a template internally that triggers the irrigate action according to the inputs provided.
+
+The component creates two switch platform types
+* irrigationprogram - to represent a program
   - The irrigation entity stores the last run day.
   - The list of zones to run in this program.
-  - Has attribute defining how many days since it last ran.
-* irrigation_zone - to represent zones
+  - binary sensor definition for a rain sensor
+* irrigationzone - to represent zones
   - The irrigation_zone provides the link to a switch entity to control a solenoid.
   - The length of time to water.
   - Has attribute defining remaining run time.
 
 ## INSTALLATION
-Copy the following files to the ‘config/custom components/irrigation’ directory 
-* `__init__.py`
-* `Manifest.json`
-* `Services.yaml`
+### To create a working sample
+* Copy the following program and zone folders to the ‘config/custom components/’ directory 
+* Copy the 'irrigation.yaml' file to the packages directory or configuration.yaml
+* Copy the 'dummyzones.yaml' file to the packages directory of configuration yaml. This will provide dummy implementation of switches to represent solenoids.
+* In Lovelace create a 'manual' card and copy the contents of the 'lovelace.yaml' file
 
 ## CONFIGURATION
 An irrigation section must be present in the configuration.yaml file that specifies the irrigation programs, zones and the switches attached:
@@ -61,24 +70,25 @@ switch:
 ```
 ## CONFIGURATION VARIABLES
 
-## programs
-*(list)(Required)* a list of programs to run.
-#### name
+## program
+*(string)(Required)* the switch entity.
+#### friendly_name
 *(string)(Required)* This is the name given to the irrigation entity.
-#### template
+#### start_time
 *(template)(Required)* Allows a value template to define when watering occurs on the program. Watering will occur when the template evaluates to True.
-#### icon
-*(icon)(Optional)* This will replace the default icon icon mdi:fountain.
+#### run_freq or run_days
+*(input_select)(Optional)* This will set how often the irrigation will run.
+##### run_freq
+*(input_select)* A numeric value that represent the frequency to water, 1 is daily
+##### run_days
+*(input_select)* The selected option should provide a list days to run, 'Sun','Thu' will run on Sunday and Thursday
+#### irrigation_on
+*(input_boolean)(Optional)* Attribute to temproarily disable the watering schedule
 #### Zones 
-*(list)(Required)* the list of zones to sequentially water.
+*(list)(Required)* the list of zones to water.
 #### zone
 *(entity)(Required)* This is the name given to the irrigation_zone entity.
-#### water
-*(int)(Optional)* This it the period that the zone will turn the switch_entity on for. Range 1 to 30 minutes. Defaults to the zone specification if not provided.
-#### wait
-*(int)(Optional)* This provides for an Eco capability implementing a cycle of water/wait/repeat to allow water to soak into the soil. Range 1 to 30 minutes. Defaults to the zone specification if not provided.
-#### repeat
-*(int)(Optional)* This is the number of cycles to run water/wait. Range 1 to 30. Defaults to the zone specification if not provided.
+
 
 
 ## zones
