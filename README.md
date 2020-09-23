@@ -15,9 +15,7 @@ Water can occur in an Eco mode where a water/wait/repeat cycle is run to minimis
 
 Only one program can run at a time to prevent multiple solenoids being activated. If programs overlap the running program will be stopped.
 
-Templates are used to monitor conditions to initiate watering. For programs this can be used to run on specific days or every 3 days or to prevent watering based on a sensor state. For zones this can be used so rules can be applied to individual zones allowing watering to occur in a covered area, or not occur if it is very windy the options are endless.
-
-All the inputs of the new platforms are home assistant entities so the start time is provided via a input_date_time entity.
+All the inputs of the new platforms are Home Assistant entities for example the start time is provided via a input_date_time entity.
 
 All the information provided is used to define a template internally that triggers the irrigate action according to the inputs provided.
 
@@ -50,7 +48,6 @@ An irrigation section must be present in the configuration.yaml file that specif
         irrigation_on: input_boolean.irrigation_on
         start_time: input_datetime.irrigation_morning_start_time
         run_freq: input_select.irrigation_freq
-    #    run_days: input_select.irrigation_run_days
         rain_sensor: binary_sensor.irrigation_rain_sensor
         ignore_rain_sensor: input_boolean.irrigation_ignore_rain_sensor
         icon: mdi:fountain
@@ -96,21 +93,20 @@ An irrigation section must be present in the configuration.yaml file that specif
 *(entity)(Required)* This is the name given to the irrigation_zone entity.
 
 
-
-## zones
-*(list)(Required)* a list of zone to operate.
-#### name
-*(string)(Required)* This is the name given to the irrigation_zone entity.
+## zone
+*(string)(Required)* the switch entity.
+#### friendly_name
+*(string)(Required)* This is the name given to the irrigation entity.
+#### ignore_rain_sensor
+*(input_boolean)(Optional)* Attribute to allow the zone to run regardless of the state of the rain sensor. Useful for sheltered areas that do not get rain.
 #### water
-*(int)(Required)* This it the period that the zone will turn the switch_entity on for. Range 1 to 30 minutes.
+*(input_number)(Required)* This it the period that the zone will turn the switch_entity on for.
 #### wait
-*(int)(Optional)* This provides for an Eco capability implementing a cycle of water/wait/repeat to allow water to soak into the soil. Range 1 to 30 minutes.
+*(input_number)(Optional)* This provides for an Eco capability implementing a cycle of water/wait/repeat to allow water to soak into the soil.
 #### repeat
-*(int)(Optional)* This is the number of cycles to run water/wait. Range 1 to 30.
-#### template
-*(template)(Optional)* Allows a value_template to defer watering on a zone. If defined watering will occur when the template evaluates to True.
+*(input_number)(Optional)* This is the number of cycles to run water/wait.
 #### switch_entity
-*(entity)(Required)* The switch to operate when the zone is triggered.
+*(switch)(Required)* The switch to operate when the zone is triggered.
 #### icon_on
 *(icon)(Optional)* This will replace the default icon mdi:water.
 #### icon_off
@@ -120,33 +116,13 @@ An irrigation section must be present in the configuration.yaml file that specif
 
 ## SERVICES
 ```yaml
-run_program:
-    description: Run a defined irrigation program.
-    fields:
-        entity_id:
-            description: The program to manually run, template evaluation is ignored.
-            example: 'irrigation.morning'
+irrigationprogram.stop_programs:
+    description: Stop any running program.
 
-irrigationprog.stop_programs:
-    description: Stop any running programs or stations.
+irrigationzone.stop_zones:
+    description: Stop any running zone.
 ```
 
-## TEMPLATE EXAMPLES
-Both of these templates provide the same result for watering on defined days.
-```yaml
-"{{ now().weekday() in [0,2,4,6] }}"
-"{{ now().strftime('%a') in ['Mon','Wed','Fri','Sun'] }}"
-```
-Water every three days at 7:30am.
-```yaml
-"{{ states('sensor.time') == '07:30' and state_attr('irrigation.morning', 'days_since') > 2 }}"
-```
-
-Check sensor values.
-```yaml
-{{ states('sensor.time') == '07:30' and now().weekday() in [0,1,2,3,4,5,6] and states('binary_sensor.is_wet') == 'off' }}
-{{ states('sensor.time') == '07:30' and is_state('binary_sensor.is_wet','off') }}
-{{ states('sensor.time') == '07:30' and states('binary_sensor.is_wet') == 'off' }}
 ```
 ## ESPHOME
 An example ESPHOME configuration file is included in the repository this example utilises:
@@ -158,8 +134,6 @@ An example ESPHOME configuration file is included in the repository this example
 ## REVISION HISTORY
 0.1
 •	Initial release
-0.2
-•	template based
-•	time remaining countdown
+
 
 
