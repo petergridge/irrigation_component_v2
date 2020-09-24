@@ -1,0 +1,154 @@
+
+
+switch:
+  - platform: irrigationzone
+    switches:
+      pot_plants:
+        friendly_name: Pot Plants
+        water: input_number.irrigation_pot_plants_run
+        wait: input_number.irrigation_pot_plants_wait
+        repeat: input_number.irrigation_pot_plants_repeat
+        switch_entity: switch.irrigation_solenoid_01
+        icon_off: 'mdi:flower'
+      front_lawn:
+        friendly_name: front Lawn
+        water: input_number.irrigation_lawn_run
+        wait: input_number.irrigation_lawn_wait
+        repeat: input_number.irrigation_lawn_repeat
+        switch_entity: switch.irrigation_solenoid_02
+        icon_off: 'mdi:grass'
+      vege_patch:
+        friendly_name: Vege Patch
+        water: input_number.irrigation_vege_run
+        wait: input_number.irrigation_vege_wait
+        repeat: input_number.irrigation_vege_repeat
+        icon_off: 'mdi:carrot'
+        switch_entity: switch.irrigation_solenoid_03
+
+  - platform: irrigationprogram
+    switches: 
+      morning:
+        friendly_name: Morning
+        irrigation_on: input_boolean.irrigation_on
+        start_time: input_datetime.irrigation_morning_start_time
+        run_freq: input_select.irrigation_freq
+    #    run_days: input_select.irrigation_run_days
+        rain_sensor: binary_sensor.irrigation_rain_sensor
+        ignore_rain_sensor: input_boolean.irrigation_ignore_rain_sensor
+        icon: mdi:fountain
+        zones:
+          - zone: switch.pot_plants
+          - zone: switch.front_lawn
+
+
+input_number:
+  irrigation_pot_plants_run:
+    name: water
+    min: 1
+    max: 30
+    step: 1
+    icon: mdi:water
+    unit_of_measurement: min
+  irrigation_pot_plants_wait:
+    name: wait
+    min: 0
+    max: 10
+    step: 1
+    icon: mdi:timer-sand
+    unit_of_measurement: min
+  irrigation_pot_plants_repeat:
+    name: repeat
+    min: 1
+    max: 10
+    step: 1
+    icon: mdi:repeat
+    unit_of_measurement: iterations
+
+  irrigation_lawn_run:
+    name: water
+    min: 1
+    max: 30
+    step: 1
+    icon: mdi:water
+  irrigation_lawn_wait:
+    name: wait
+    min: 0
+    max: 10
+    step: 1
+    icon: mdi:timer-sand
+  irrigation_lawn_repeat:
+    name: repeat
+    min: 1
+    max: 10
+    step: 1
+    icon: mdi:repeat
+
+  irrigation_vege_run:
+    name: water
+    min: 1
+    max: 30
+    step: 1
+    icon: mdi:water
+  irrigation_vege_wait:
+    name: wait
+    min: 0
+    max: 10
+    step: 1
+    icon: mdi:timer-sand
+  irrigation_vege_repeat:
+    name: repeat
+    min: 1
+    max: 10
+    step: 1
+    icon: mdi:repeat
+
+input_datetime:
+  irrigation_morning_start_time:
+    name: Morning Start Time
+    has_date: false
+    has_time: true
+  irrigation_afternoon_start_time:
+    name: Afternoon Start Time
+    has_date: false
+    has_time: true
+  irrigation_midday_start_time:
+    name: Midday Start Time
+    has_date: false
+    has_time: true
+
+input_select:
+# Use either run days of Frequency they are mutually exclusive
+
+  irrigation_run_days:
+    name: Run Days
+    options:
+      - "['Wed','Sat']"
+      - "['Sun','Thu']"
+      - "['Mon','Fri']"
+      - "['Tue','Sat']"
+      - "['Sun','Wed']"
+      - "['Mon','Thu']"
+      - "['Tue','Fri']"
+      - "['Mon','Wed','Fri']"
+      - "['Tue','Thu','Sat']"
+
+  irrigation_freq:
+    name: Frequency
+    options:
+      - "1"
+      - "2"
+      - "3"
+      - "4"
+      - "5"
+      - "6"
+      - "7"
+
+input_boolean:
+  irrigation_on:
+    name: Enable Irrigation
+
+  irrigation_config:
+    name: Show Configuration
+
+  irrigation_ignore_rain_sensor:
+    name: Ignore Rain Sensor
