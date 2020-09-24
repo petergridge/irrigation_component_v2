@@ -4,11 +4,11 @@ The driver for this project is to provide an easy to configure user interface fo
 ![irrigation|690x469,50%](irrigation.jpg) 
 ![irrigation2|690x469,50%](irrigation2.jpg)
 
-All the inputs of the new platforms are Home Assistant entities for example the start time is provided via a input_date_time entity. The information available is used to define a template internally that is evaluated to trigger the irrigate action according to the inputs provided.
+All the inputs of the new platforms are Home Assistant entities for example the start time is provided via a input_datetime entity. The information is used to define a template internally that is evaluated to trigger the irrigate action according to the inputs provided.
 
 Watering can occur in an Eco mode where a water/wait/repeat cycle is run to minimise run off by letting water soak as a by using several short watering cycles.
 
-The rain sensor is implemented as a binary_sensor, this allows a components to suspend the irrigation. Additionally being implemented as a switch you can also start a program or zone based on any automation. There is also the ability to ignore the rain sensor at the program or zone level so sheltered areas can be watered even if the rain sensor has been activated.
+The rain sensor is implemented as a binary_sensor, this allows a components to suspend the irrigation. Additionally being implemented as a switch you can also start a program or zone based manually or using an automation. There is also the ability to ignore the rain sensor at the program or zone level so sheltered areas can be watered even if the rain sensor has been activated.
 
 Only one program or zone can run at a time to prevent multiple solenoids being activated. If program start times result in an overlap the running program will be stopped.
 
@@ -25,7 +25,7 @@ The solution is two custom components implemeting new switch platform types:
 ## INSTALLATION
 ### To create a working sample
 * Copy the irrigationprogram and irrigationzone folders to the ‘config/custom components/’ directory 
-* Copy the 'irrigation.yaml' file to the packages directory or into configuration.yaml
+* Copy the 'irrigation.yaml' file to the packages directory or into configuration.yaml. Sample configuration
 * Copy the 'dummy_switches.yaml' file to the packages directory of into configuration yaml. This will provide dummy implementation of switches to represent solenoids.
 * Restart Home Assistant
 * In Lovelace create a 'manual' card and copy the contents of the 'lovelace.yaml' file
