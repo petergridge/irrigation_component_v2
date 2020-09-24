@@ -26,7 +26,7 @@ The solution is two custom components implemeting new switch platform types:
 ### To create a working sample
 * Copy the irrigationprogram and irrigationzone folders to the ‘config/custom components/’ directory 
 * Copy the 'irrigation.yaml' file to the packages directory or into configuration.yaml
-* Copy the 'dummyzones.yaml' file to the packages directory of into configuration yaml. This will provide dummy implementation of switches to represent solenoids.
+* Copy the 'dummy_switches.yaml' file to the packages directory of into configuration yaml. This will provide dummy implementation of switches to represent solenoids.
 * Restart Home Assistant
 * In Lovelace create a 'manual' card and copy the contents of the 'lovelace.yaml' file
 
