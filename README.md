@@ -8,7 +8,7 @@ All the inputs of the new platforms are Home Assistant entities for example the 
 
 Watering can occur in an Eco mode where a water/wait/repeat cycle is run to minimise run off by letting water soak as a by using several short watering cycles.
 
-The rain sensor is implemented as a binary_sensor, this allows a components to suspend the irrigation. Additionally being implemented as a switch you can also start a program or zone based manually or using an automation. There is also the ability to ignore the rain sensor at the program or zone level so sheltered areas can be watered even if the rain sensor has been activated.
+The rain sensor is implemented as a binary_sensor, this allows a practically any combination of sensors to suspend the irrigation. Additionally being implemented as a switch you can start a program or zone based manually or using an automation. There is also the ability to ignore the rain sensor at the program or zone level so sheltered areas can be watered even if the rain sensor has been activated.
 
 Only one program or zone can run at a time to prevent multiple solenoids being activated. If program start times result in an overlap the running program will be stopped.
 
