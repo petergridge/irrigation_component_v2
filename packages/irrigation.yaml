@@ -37,8 +37,8 @@ switch:
         ignore_rain_sensor: input_boolean.irrigation_ignore_rain_sensor
         icon: mdi:fountain
         zones:
-          - zone: switch.pot_plants
-          - zone: switch.front_lawn
+          - zone: switch.dummy_1
+          - zone: switch.dummy_2
 
 
 input_number:
