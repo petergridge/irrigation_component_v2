@@ -29,6 +29,8 @@ The solution is two custom components implemeting new switch platform types:
 * Copy the 'dummy_switches.yaml' file to the packages directory of into configuration yaml. This will provide dummy implementation of switches to represent solenoids.
 * Restart Home Assistant
 * In Lovelace create a 'manual' card and copy the contents of the 'lovelace.yaml' file
+### Important
+* Make sure that all of the objects you reference i.e. input_boolean, switch etc are defined or you may get errors.
 
 ## CONFIGURATION
 
