@@ -189,14 +189,15 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
     async def async_added_to_hass(self):
 
         state = await self.async_get_last_state()
-        self._last_run     = state.attributes.get('last_ran')
-
-        """ default to today for new programs """
-        if self._last_run is None:
-            utcnow         = dt_util.utcnow()
-            time_date      = dt_util.start_of_local_day(dt_util.as_local(utcnow))
-            self._last_run = dt_util.as_local(time_date).date().isoformat()
-
+        try:
+            self._last_run     = state.attributes.get('last_ran')
+        except:
+            """ default to today for new programs """
+            if self._last_run is None:
+                utcnow         = dt_util.utcnow()
+                time_date      = dt_util.start_of_local_day(dt_util.as_local(utcnow))
+                self._last_run = dt_util.as_local(time_date).date().isoformat()
+        
         ATTRS = {'last_ran':self._last_run}
         setattr(self, '_state_attributes', ATTRS)
 
