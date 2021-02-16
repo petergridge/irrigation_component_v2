@@ -175,7 +175,10 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
                     "- as_timestamp(states." + self.entity_id + \
                     ".attributes.last_ran) | int) /86400) | int(0) "
 
+
         template = "{{ " + template + " }}"
+        _LOGGER.error('Template: %s',
+                       template)
         template = cv.template(template)
         template.hass = hass
         self._template = template
