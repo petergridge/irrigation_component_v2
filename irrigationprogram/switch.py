@@ -161,14 +161,30 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
         self._last_run           = None
         self._triggered_by_template = False
 
+        if  hass.states.async_available(self._start_time):
+            _LOGGER.error('%s not found',self._start_time)
+        if self._rain_sensor is not None:
+            if  hass.states.async_available(self._rain_sensor):
+                _LOGGER.error('%s not found',self._rain_sensor)
+        if self._ignore_rain_sensor is not None:
+            if  hass.states.async_available(self._ignore_rain_sensor):
+                _LOGGER.error('%s not found',self._ignore_rain_sensor)
+
+
         """ Build a template from the attributes provided """
         self._template = None
         template = "states('sensor.time') + ':00' == states('" + self._start_time + "') "
         if self._irrigation_on is not None:
+            if  hass.states.async_available(self._irrigation_on):
+                _LOGGER.error('%s not found',self._irrigation_on)
             template = template + " and is_state('" + self._irrigation_on + "', 'on') "
         if self._run_days is not None:
+            if  hass.states.async_available(self._run_days):
+                _LOGGER.error('%s not found',self._run_days)
             template = template + " and now().strftime('%a') in states('" + self._run_days + "')"
         if self._run_freq is not None:
+            if  hass.states.async_available(self._run_freq):
+                _LOGGER.error('%s not found',self._run_freq)
             template = template + \
                     " and states('" + run_freq + "')|int" + \
                     " == ((as_timestamp(now()) " + \
@@ -177,8 +193,12 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
 
 
         template = "{{ " + template + " }}"
+
+
         _LOGGER.error('Template: %s',
                        template)
+
+
         template = cv.template(template)
         template.hass = hass
         self._template = template
