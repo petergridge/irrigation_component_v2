@@ -161,6 +161,8 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
         self._last_run           = None
         self._triggered_by_template = False
 
+        if  hass.states.async_available('sensor.time'):
+            _LOGGER.error('sensor,time not found add senor platform time')
         if  hass.states.async_available(self._start_time):
             _LOGGER.error('%s not found',self._start_time)
         if self._rain_sensor is not None:
@@ -187,7 +189,7 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
                 _LOGGER.error('%s not found',self._run_freq)
             template = template + \
                     " and states('" + run_freq + "')|int" + \
-                    " == ((as_timestamp(now()) " + \
+                    " <= ((as_timestamp(now()) " + \
                     "- as_timestamp(states." + self.entity_id + \
                     ".attributes.last_ran) | int) /86400) | int(0) "
 
@@ -195,7 +197,7 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
         template = "{{ " + template + " }}"
 
 
-        _LOGGER.error('Template: %s',
+        _LOGGER.debug('Template: %s',
                        template)
 
 
@@ -281,9 +283,7 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
     async def async_update(self):
         """Update the state from the template."""
         if self._running == False:
-            evaluated = 'False'
-            evaluated = self._template.async_render()
-            if evaluated == 'True':
+            if self._template.async_render():
                 self._running = True
                 self._triggered_by_template = True
                 await self.async_turn_on()
