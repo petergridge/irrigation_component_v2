@@ -138,5 +138,5 @@ An example ESPHOME configuration file is included in the repository this example
 * Moisture Sensor - analogue/digital moisture sensor
 
 ## REVISION HISTORY
-0.1
-•	Initial release
+0.2
+•	Remove requirement for HA time sensor
