@@ -130,7 +130,7 @@ irrigationzone.stop_zones:
     description: Stop any running zone.
 ```
 ## ESPHOME
-```
+
 An example ESPHOME configuration file is included in the repository this example utilises:
 * ESP8266 
 * PCF8575 - I2C IO expander for up to 16 solenoids
