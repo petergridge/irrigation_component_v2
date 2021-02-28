@@ -24,14 +24,6 @@ The solution is two custom components implemeting new switch platform types:
 
 ## INSTALLATION
 ### To create a working sample
-* Add the sensor platfor time_date
- ```yaml
- sensor:
-  - platform: time_date
-    display_options:
-      - 'time'
-      - 'date'
-```
 * Copy the irrigationprogram and irrigationzone folders to the ‘config/custom components/’ directory 
 * Copy the 'irrigation.yaml' file to the packages directory or into configuration.yaml. Sample configuration
 * Copy the 'dummy_switches.yaml' file to the packages directory of into configuration yaml. This will provide dummy implementation of switches to represent solenoids.
