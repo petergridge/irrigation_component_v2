@@ -31,7 +31,8 @@ The solution is two custom components implemeting new switch platform types:
 * In Lovelace create a 'manual' card and copy the contents of the 'lovelace.yaml' file
 ### Important
 * Make sure that all of the objects you reference i.e. input_boolean, switch etc are defined or you may get errors.
-
+### Testing
+* When the program is first set up the last_ran attribute is set to today so if you are using the frequency option it won’t run until the next day. You can use the developer tools to modify the attribute for testing.
 ## CONFIGURATION
 
 ### Example configuration.yaml entry
