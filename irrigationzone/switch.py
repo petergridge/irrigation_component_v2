@@ -297,11 +297,11 @@ class IrrigationZone(SwitchEntity):
 
 
     async def async_turn_off(self, **kwargs):
-
-        self._stop = True
-        DATA = {ATTR_ENTITY_ID: self._switch}
-        await self.hass.services.async_call(CONST_SWITCH,
-                                            SERVICE_TURN_OFF,
-                                            DATA)
-        self._state = False
-        self.async_schedule_update_ha_state()
+        if self._state == True:
+            self._stop = True
+            DATA = {ATTR_ENTITY_ID: self._switch}
+            await self.hass.services.async_call(CONST_SWITCH,
+                                                SERVICE_TURN_OFF,
+                                                DATA)
+            self._state = False
+            self.async_schedule_update_ha_state()
