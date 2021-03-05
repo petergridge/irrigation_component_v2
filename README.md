@@ -133,3 +133,7 @@ An example ESPHOME configuration file is included in the repository this example
 ## REVISION HISTORY
 0.2
 •	Remove requirement for HA time sensor
+1.1.0 
+* add version to manifest.json files
+* tweak how the program turns off zones
+* remove validation for time.sensor
