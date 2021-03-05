@@ -51,7 +51,6 @@ from homeassistant.const import (
     MATCH_ALL,
 )
 
-
 SWITCH_SCHEMA = vol.All(
     cv.deprecated(ATTR_ENTITY_ID),
     vol.Schema(
@@ -159,10 +158,9 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
         self._device_id          = device_id
         self._running            = False
         self._last_run           = None
+        self._time               = None
         self._triggered_by_template = False
 
-        if  hass.states.async_available('sensor.time'):
-            _LOGGER.error('sensor,time not found add senor platform time')
         if  hass.states.async_available(self._start_time):
             _LOGGER.error('%s not found',self._start_time)
         if self._rain_sensor is not None:
@@ -172,10 +170,11 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
             if  hass.states.async_available(self._ignore_rain_sensor):
                 _LOGGER.error('%s not found',self._ignore_rain_sensor)
 
-
         """ Build a template from the attributes provided """
         self._template = None
-        template = "states('sensor.time') + ':00' == states('" + self._start_time + "') "
+        template = "states." + self.entity_id + \
+                    ".attributes.time == states('" + self._start_time + "') "
+
         if self._irrigation_on is not None:
             if  hass.states.async_available(self._irrigation_on):
                 _LOGGER.error('%s not found',self._irrigation_on)
@@ -193,13 +192,10 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
                     "- as_timestamp(states." + self.entity_id + \
                     ".attributes.last_ran) | int) /86400) | int(0) "
 
-
         template = "{{ " + template + " }}"
-
 
         _LOGGER.debug('Template: %s',
                        template)
-
 
         template = cv.template(template)
         template.hass = hass
@@ -214,16 +210,16 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
     async def async_added_to_hass(self):
 
         state = await self.async_get_last_state()
+        now         = dt_util.utcnow()
+        time_date   = dt_util.start_of_local_day(dt_util.as_local(now))
         try:
             self._last_run     = state.attributes.get('last_ran')
         except:
             """ default to today for new programs """
             if self._last_run is None:
-                utcnow         = dt_util.utcnow()
-                time_date      = dt_util.start_of_local_day(dt_util.as_local(utcnow))
                 self._last_run = dt_util.as_local(time_date).date().isoformat()
-        
-        ATTRS = {'last_ran':self._last_run}
+        self._time = dt_util.as_local(dt_util.as_local(now)).strftime("%H:%M:00")
+        ATTRS = {'last_ran':self._last_run, 'time': self._time}
         setattr(self, '_state_attributes', ATTRS)
 
         """ house keeping to help ensure solenoids are in a safe state """
@@ -243,7 +239,6 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
 
         self.hass.bus.async_listen_once(
             EVENT_HOMEASSISTANT_START, template_sensor_startup)
-
 
         await super().async_added_to_hass()
 
@@ -281,6 +276,13 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
         return self._state_attributes
 
     async def async_update(self):
+        now            = dt_util.utcnow()
+        time_date      = dt_util.start_of_local_day(dt_util.as_local(now))
+        self._time     = dt_util.as_local(dt_util.as_local(now)).strftime("%H:%M:00")
+        ATTRS = {'last_ran':self._last_run, 'time': self._time}
+        setattr(self, '_state_attributes', ATTRS)
+        self.async_write_ha_state()
+
         """Update the state from the template."""
         if self._running == False:
             if self._template.async_render():
@@ -307,7 +309,6 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
             z_name     = zone.get(ATTR_NAME)
             z_ignore   = zone.get(ATTR_IGNORE_RAIN_SENSOR)
             z_zone     = zone.get(ATTR_ZONE)
-
 
             if self._triggered_by_template == True:
                 """ assess the rain sensor """
@@ -341,7 +342,8 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
             now            = dt_util.utcnow()
             time_date      = dt_util.start_of_local_day(dt_util.as_local(now))
             self._last_run = dt_util.as_local(time_date).date().isoformat()
-            ATTRS = {'last_ran':self._last_run}
+            self._time     = dt_util.as_local(dt_util.as_local(now)).strftime("%H:%M:00")
+            ATTRS = {'last_ran':self._last_run, 'time': self._time}
             setattr(self, '_state_attributes', ATTRS)
 
             if self._stop == True:
@@ -367,8 +369,10 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
         now            = dt_util.utcnow()
         time_date      = dt_util.start_of_local_day(dt_util.as_local(now))
         self._last_run = dt_util.as_local(time_date).date().isoformat()
-        ATTRS = {'last_ran':self._last_run}
+        self._time     = dt_util.as_local(dt_util.as_local(now)).strftime("%H:%M:00")
+        ATTRS = {'last_ran':self._last_run, 'time': self._time}
         setattr(self, '_state_attributes', ATTRS)
+
 
         self._state       = False
         self._running     = False
