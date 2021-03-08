@@ -163,12 +163,9 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
 
         if  hass.states.async_available(self._start_time):
             _LOGGER.error('%s not found',self._start_time)
-        if self._rain_sensor is not None:
-            if  hass.states.async_available(self._rain_sensor):
-                _LOGGER.error('%s not found',self._rain_sensor)
         if self._ignore_rain_sensor is not None:
             if  hass.states.async_available(self._ignore_rain_sensor):
-                _LOGGER.error('%s not found',self._ignore_rain_sensor)
+                _LOGGER.warning('%s not found',self._ignore_rain_sensor)
 
         """ Build a template from the attributes provided """
         self._template = None
@@ -177,15 +174,15 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
 
         if self._irrigation_on is not None:
             if  hass.states.async_available(self._irrigation_on):
-                _LOGGER.error('%s not found',self._irrigation_on)
+                _LOGGER.warning('%s not found',self._irrigation_on)
             template = template + " and is_state('" + self._irrigation_on + "', 'on') "
         if self._run_days is not None:
             if  hass.states.async_available(self._run_days):
-                _LOGGER.error('%s not found',self._run_days)
+                _LOGGER.warning('%s not found',self._run_days)
             template = template + " and now().strftime('%a') in states('" + self._run_days + "')"
         if self._run_freq is not None:
             if  hass.states.async_available(self._run_freq):
-                _LOGGER.error('%s not found',self._run_freq)
+                _LOGGER.warning('%s not found',self._run_freq)
             template = template + \
                     " and states('" + run_freq + "')|int" + \
                     " <= ((as_timestamp(now()) " + \
@@ -298,7 +295,8 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
         await self.hass.services.async_call(DOMAIN,
                                             'stop_programs',
                                             DATA)
-
+        """ give the stop_programs call time to complete """
+        await asyncio.sleep(1)
         """ Initialise for stop programs service call """
         self._state = True
         self._stop  = False
@@ -314,6 +312,8 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
                 """ assess the rain sensor """
                 alt_template = ""
                 if self._rain_sensor is not None:
+                    if  self.hass.states.get(self._rain_sensor) == None:
+                        _LOGGER.warning('%s not found',self._rain_sensor)
                     alt_template = alt_template + "{{ ( is_state('" + self._rain_sensor + "', 'off') "
                     if  self._ignore_rain_sensor is not None:
                         alt_template = alt_template + " or is_state('" + self._ignore_rain_sensor + "', 'on') "
@@ -385,7 +385,8 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
 
     async def async_turn_off(self, **kwargs):
 
-        self._stop = True
+        self._stop = True 
+ 
         for zone in self._zones:
             z_zone = zone.get(ATTR_ZONE)
             DATA = {ATTR_ENTITY_ID: z_zone}
