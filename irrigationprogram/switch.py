@@ -45,8 +45,6 @@ from homeassistant.const import (
     CONF_UNIQUE_ID,
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
-#    STATE_ON,
-#    STATE_OFF,
     ATTR_ICON,
     MATCH_ALL,
 )
@@ -191,8 +189,18 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
 
         template = "{{ " + template + " }}"
 
+        _LOGGER.debug('-------------------- on start: %s ----------------------------',self._name)
+
         _LOGGER.debug('Template: %s',
                        template)
+        if self._start_time is not None:
+            _LOGGER.debug('Start Time %s: %s',self._start_time, hass.states.get(self._start_time))
+        if self._irrigation_on is not None:
+            _LOGGER.debug('Irrigation on %s: %s',self._irrigation_on, hass.states.get(self._irrigation_on))
+        if self._run_days is not None:
+            _LOGGER.debug('Run Days %s: %s',self._run_days, hass.states.get(self._run_days))
+        if self._run_freq is not None:
+            _LOGGER.debug('Run Frequency %s: %s',self._run_freq, hass.states.get(self._run_freq))
 
         template = cv.template(template)
         template.hass = hass
@@ -302,11 +310,32 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
         self._stop  = False
         self.async_write_ha_state()
 
+        _LOGGER.debug('-------------------- on execution: %s ----------------------------',self._name)
+#        _LOGGER.debug('Program: %s',self._name)
+        _LOGGER.debug('Template: %s',
+                       self._template)
+        if self._start_time is not None:
+            _LOGGER.debug('Start Time %s: %s',self._start_time, self.hass.states.get(self._start_time))
+        if self._irrigation_on is not None:
+            _LOGGER.debug('Irrigation on %s: %s',self._irrigation_on, self.hass.states.get(self._irrigation_on))
+        if self._run_days is not None:
+            _LOGGER.debug('Run Days %s: %s',self._run_days, self.hass.states.get(self._run_days))
+        if self._run_freq is not None:
+            _LOGGER.debug('Run Frequency %s: %s',self._run_freq, self.hass.states.get(self._run_freq))
+
         """ Iterate through all the defined zones """
         for zone in self._zones:
-            z_name     = zone.get(ATTR_NAME)
             z_ignore   = zone.get(ATTR_IGNORE_RAIN_SENSOR)
             z_zone     = zone.get(ATTR_ZONE)
+
+            _LOGGER.debug('------------ on execution zone: %s--------', z_zone)
+            if self._rain_sensor is not None:
+                _LOGGER.debug('Rain Sensor %s: %s',self._rain_sensor, self.hass.states.get(self._rain_sensor))
+            if self._ignore_rain_sensor is not None:
+                _LOGGER.debug('Ignore Rain Sensor %s: %s',self._ignore_rain_sensor, self.hass.states.get(self._ignore_rain_sensor))
+
+            if self._triggered_by_template == False:
+                _LOGGER.debug('------------Irrigation Manually triggered, rain sensor not evaluated--------')
 
             if self._triggered_by_template == True:
                 """ assess the rain sensor """
@@ -321,6 +350,8 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
                         alt_template = alt_template + " or is_state('" + z_ignore + "', 'on') "
                     alt_template = alt_template + " ) }}"
 
+                _LOGGER.debug('Rain Sensor Template: %s',alt_template)
+
                 alt_template = cv.template(alt_template)
                 alt_template.hass = self.hass
                 try:
@@ -331,7 +362,7 @@ class IrrigationProgram(SwitchEntity, RestoreEntity):
                                   self._template)
                     return
 
-                if evaluated == 'False':
+                if evaluated == False:
                     #if called from a service-run the program
                     return
 
