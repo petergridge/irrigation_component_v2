@@ -44,6 +44,16 @@ sensor:
 ```
 ### Testing
 * When the program is first set up the last_ran attribute is set to today so if you are using the frequency option it won’t run until the next day. You can use the developer tools to modify the attribute for testing.
+### Debug
+Add the following to your logger section configuration.yaml
+```yaml
+logger:
+    default: warning
+    logs:
+        custom_components.irrigationprogram: debug
+        custom_components.irrigationzone: debug
+```
+
 ## CONFIGURATION
 
 ### Example configuration.yaml entry
