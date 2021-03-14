@@ -6,7 +6,7 @@ The driver for this project is to provide an easy to configure user interface fo
 
 All the inputs of the new platforms are Home Assistant entities for example the start time is provided via a input_datetime entity. The information is used to define a template internally that is evaluated to trigger the irrigate action according to the inputs provided.
 
-Watering can occur in an Eco mode where a water/wait/repeat cycle is run to minimise run off by letting water soak as a by using several short watering cycles.
+Watering can occur in an Eco mode where a water/wait/repeat cycle is run to minimise run off by letting water soak as a by using several short watering cycles. The wait and repeat configuration is optional if you only want to water for a single lengthy period of time.
 
 The rain sensor is implemented as a binary_sensor, this allows a practically any combination of sensors to suspend the irrigation. Additionally being implemented as a switch you can start a program or zone based manually or using an automation. There is also the ability to ignore the rain sensor at the program or zone level so sheltered areas can be watered even if the rain sensor has been activated.
 
