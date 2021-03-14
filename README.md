@@ -12,6 +12,8 @@ The rain sensor is implemented as a binary_sensor, this allows a practically any
 
 Only one program or zone can run at a time to prevent multiple solenoids being activated. If program start times result in an overlap the running program will be stopped.
 
+Manually starting a program by turning the switch on will not evaluate the rain sensor, as there is an assumption that there is an intent to run the program or zone.
+
 The solution is two custom components implemeting new switch platform types:
 * irrigationprogram - to represent a program
   - The irrigation entity stores the last run day.
@@ -31,6 +33,15 @@ The solution is two custom components implemeting new switch platform types:
 * In Lovelace create a 'manual' card and copy the contents of the 'lovelace.yaml' file
 ### Important
 * Make sure that all of the objects you reference i.e. input_boolean, switch etc are defined or you may get errors.
+### Pre-requisite
+* The time_date integration is required
+```yaml
+sensor:
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+```
 ### Testing
 * When the program is first set up the last_ran attribute is set to today so if you are using the frequency option it won’t run until the next day. You can use the developer tools to modify the attribute for testing.
 ## CONFIGURATION
@@ -73,7 +84,7 @@ The solution is two custom components implemeting new switch platform types:
 #### run_freq or run_days
 *(input_select)(Optional)* This will set how often the irrigation will run.
 ##### run_freq
-*(input_select)* A numeric value that represent the frequency to water, 1 is daily
+*(input_select)* A numeric value that represent the frequency to water, 1 is daily, 2 is every second day and so on.
 ##### run_days
 *(input_select)* The selected option should provide a list days to run, 'Sun','Thu' will run on Sunday and Thursday
 #### irrigation_on
