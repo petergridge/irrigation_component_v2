@@ -135,6 +135,7 @@ input_select:
       - "['Tue','Fri']"
       - "['Mon','Wed','Fri']"
       - "['Tue','Thu','Sat']"
+      - "['Mon','Tue','Wed','Thu','Fri','Sat','Sun']"
 
   irrigation_freq:
     name: Frequency
