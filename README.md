@@ -100,9 +100,9 @@ logger:
 #### irrigation_on
 *(input_boolean)(Optional)* Attribute to temporarily disable the watering schedule
 #### rain_sensor
-*(binary_sensor)(Optional)* Any sensor - True or On will prevent the irrigation starting
+*(binary_sensor)(Optional)* Any binary sensor - True or On will prevent the irrigation starting
 #### ignore_rain_sensor
-*(input_boolean)(Optional)* Attribute to allow the schedule to run regardless of the state of the rain sensor
+*(input_boolean)(Optional)* Attribute to allow the schedule to run regardless of the state of the rain sensor - True or On will result in the rain sensor being ignored
 #### icon
 *(icon)(Optional)*
 #### Zones 
