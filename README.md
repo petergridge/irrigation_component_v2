@@ -156,13 +156,15 @@ An example ESPHOME configuration file is included in the repository this example
 * Moisture Sensor - analogue/digital moisture sensor
 
 ## REVISION HISTORY
-0.2
+###0.2
 •	Remove requirement for HA time sensor
-1.1.0 
+
+###1.1.0 
 * add version to manifest.json files
 * tweak how the program turns off zones
 * remove validation for time.sensor
-1.1.1
+
+###1.1.1
 * Moved ignore rain sensor functionality to the program zone configuration
 * Added the ability to use both a boolean value or a inpu_boolean to control the ignore rain at the zone level
 * Updated the manifest to correctly reference the documentation and issue management pages in my GIT repository
