@@ -73,6 +73,8 @@ logger:
           - zone: switch.pot_plants
             ignore_rain_bool: True
           - zone: switch.front_lawn
+            ignore_rain_sensor: input_boolean.irrigation_ignore_rain_sensor_front_lawn
+          - zone: switch.back_lawn
           
   - platform: irrigationzone
     switches:
@@ -92,11 +94,10 @@ logger:
 *(string)(Required)* This is the name given to the irrigation entity.
 #### start_time
 *(template)(Required)* Allows a value template to define when watering occurs on the program. Watering will occur when the template evaluates to True.
-#### run_freq or run_days
-*(input_select)(Optional)* This will set how often the irrigation will run.
-##### run_freq
+
+##### run_freq (mutually exclive with run_days)
 *(input_select)* A numeric value that represent the frequency to water, 1 is daily, 2 is every second day and so on.
-##### run_days
+##### run_days (mutually exclusive with run_freq)
 *(input_select)* The selected option should provide a list days to run, 'Sun','Thu' will run on Sunday and Thursday
 #### irrigation_on
 *(input_boolean)(Optional)* Attribute to temporarily disable the watering schedule
@@ -110,9 +111,9 @@ logger:
 *(list)(Required)* the list of zones to water.
   #### zone
   *(entity)(Required)* This is the name given to the irrigation_zone entity.
-  #### ignore_rain_sensor
-  *(input_boolean)(Optional)* Attribute to allow the schedule to run regardless of the state of the rain sensor - True or On will result in the rain sensor being ignored
-  #### ignore_rain_bool
+  #### ignore_rain_sensor (mutually exclusive with ignore_rain_bool)
+  *(input_boolean)(Optional)* Attribute to allow the schedule to run regardless of the state of the rain sensor - True or On will result in the rain sensor being ignored.
+  #### ignore_rain_bool (mutually exclusive with ignore_rain_sensor)
   *(boolean)(Optional)* Attribute to allow the schedule to run regardless of the state of the rain sensor - True or On will result in the rain sensor being ignored
 #### unique_id
 *(string)(Optional)* An ID that uniquely identifies this switch. Set this to an unique value to allow customisation trough the UI.
