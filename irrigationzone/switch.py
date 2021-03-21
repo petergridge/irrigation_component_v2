@@ -20,7 +20,6 @@ from .const import (
     DFLT_ICON_WAIT,
     DFLT_ICON_OFF,
     CONST_SWITCH,
-#    ATTR_FRIENDLY_NAME,
     ATTR_IGNORE_RAIN_SENSOR,
     ATTR_WATER,
     ATTR_WAIT,
@@ -45,7 +44,6 @@ SWITCH_SCHEMA = vol.All(
     vol.Schema(
         {
         vol.Required(ATTR_FRIENDLY_NAME): cv.string,
-        vol.Optional(ATTR_IGNORE_RAIN_SENSOR): cv.entity_domain('input_boolean'),
         vol.Required(ATTR_WATER): cv.entity_domain('input_number'),
         vol.Optional(ATTR_WAIT): cv.entity_domain('input_number'),
         vol.Optional(ATTR_REPEAT): cv.entity_domain('input_number'),
@@ -72,7 +70,6 @@ async def _async_create_entities(hass, config):
 
     for device, device_config in config[CONF_SWITCHES].items():
         friendly_name           = device_config.get(ATTR_FRIENDLY_NAME, device)
-        ignore_rain_sensor      = device_config.get(ATTR_IGNORE_RAIN_SENSOR)
         water                   = device_config.get(ATTR_WATER)
         wait                    = device_config.get(ATTR_WAIT)
         repeat                  = device_config.get(ATTR_REPEAT)
