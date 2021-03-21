@@ -71,6 +71,7 @@ logger:
         icon: mdi:fountain
         zones:
           - zone: switch.pot_plants
+            ignore_rain_bool: True
           - zone: switch.front_lawn
           
   - platform: irrigationzone
@@ -107,8 +108,12 @@ logger:
 *(icon)(Optional)*
 #### Zones 
 *(list)(Required)* the list of zones to water.
-#### zone
-*(entity)(Required)* This is the name given to the irrigation_zone entity.
+  #### zone
+  *(entity)(Required)* This is the name given to the irrigation_zone entity.
+  #### ignore_rain_sensor
+  *(input_boolean)(Optional)* Attribute to allow the schedule to run regardless of the state of the rain sensor - True or On will result in the rain sensor being ignored
+  #### ignore_rain_bool
+  *(boolean)(Optional)* Attribute to allow the schedule to run regardless of the state of the rain sensor - True or On will result in the rain sensor being ignored
 #### unique_id
 *(string)(Optional)* An ID that uniquely identifies this switch. Set this to an unique value to allow customisation trough the UI.
 
@@ -116,8 +121,6 @@ logger:
 *(string)(Required)* the switch entity.
 #### friendly_name
 *(string)(Required)* This is the name given to the irrigation entity.
-#### ignore_rain_sensor
-*(input_boolean)(Optional)* Attribute to allow the zone to run regardless of the state of the rain sensor. Useful for sheltered areas that do not get rain.
 #### water
 *(input_number)(Required)* This it the period that the zone will turn the switch_entity on for.
 #### wait
